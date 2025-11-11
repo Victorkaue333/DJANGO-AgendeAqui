@@ -1,4 +1,4 @@
-# AgendeAqui
+# Sistema Web AgendeAqui
 
 AgendeAqui é um sistema web robusto para agendamento e gerenciamento de salas de aula, projetado para otimizar a utilização dos espaços acadêmicos e facilitar o controle de reservas por professores, coordenadores e administradores. O sistema previne conflitos de horários e promove uma gestão transparente e eficiente.
 
