@@ -2,6 +2,11 @@
 
 AgendeAqui é um sistema web robusto para agendamento e gerenciamento de salas de aula, projetado para otimizar a utilização dos espaços acadêmicos e facilitar o controle de reservas por professores, coordenadores e administradores. O sistema previne conflitos de horários e promove uma gestão transparente e eficiente.
 
+## 🎓 Sobre o Projeto e o Curso
+
+Este projeto foi desenvolvido como parte das atividades do curso FIC de Desenvolvimento web com o Framework Django.  
+A entrega desta atividade terá um prazo relativamente extenso, permitindo que os participantes possam trabalhar no projeto até o final do período letivo.
+
 ## 📋 Visão Geral
 
 O AgendeAqui oferece:
