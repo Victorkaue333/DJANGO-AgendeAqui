@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'salas',
     'dashboard',
     'relatorios',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
