@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Relatórios</h1>
+
+<form method="get">
+  <label>Bloco:
+    <select name="bloco">
+      <option value="">Todos</option>
+      {% for b in blocos %}
+        <option value="{{ b.id }}" {% if request.GET.bloco == b.id|stringformat:"s" %}selected{% endif %}>{{ b.nome }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Data Início: <input type="date" name="start" value="{{ request.GET.start }}"></label>
+  <label>Data Fim: <input type="date" name="end" value="{{ request.GET.end }}"></label>
+  <button type="submit">Filtrar</button>
+  <a href="{% url 'relatorios:export_csv' %}?{% if request.GET %}{{ request.GET.urlencode }}{% endif %}">Exportar CSV</a>
+</form>
+
+{% if agendamentos is not None %}
+  <h2>Agendamentos ({{ ag_count }})</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Data</th><th>Sala</th><th>Usuário</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for a in agendamentos %}
+        <tr>
+          <td>{{ a.id }}</td>
+          <td>{{ a.data }}</td>
+          <td>{{ a.sala }}</td>
+          <td>{{ a.usuario }}</td>
+          <td>{{ a.status }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">Sem agendamentos.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <h2>Salas</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Nome</th><th>Bloco</th><th>Capacidade</th><th>Recursos</th></tr></thead>
+    <tbody>
+    {% for s in salas %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.nome }}</td>
+        <td>{{ s.bloco.nome }}</td>
+        <td>{{ s.capacidade }}</td>
+        <td>{% for r in s.recursos.all %}{{ r.nome }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">Sem salas cadastradas.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+<h2>Gráfico: Salas por Bloco</h2>
+<canvas id="chartSalas" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const data = {{ chart_data|safe }};
+  const labels = data.map(d => d.label);
+  const values = data.map(d => d.value);
+  const ctx = document.getElementById('chartSalas').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{ label: 'Salas por Bloco', data: values, backgroundColor: 'rgba(54, 162, 235, 0.5)' }]
+    }
+  });
+</script>
+
+{% endblock %}
