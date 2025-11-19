@@ -4,253 +4,361 @@
 
 {% block content %}
 <style>
-body {
-    background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%);
-    min-height: 100vh;
+  
+    body {
+    /* Garante que o fundo do corpo da página seja igual ao fundo do login */
+    background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%) !important;
+    margin: 0;
+    padding: 0;
 }
-.login-main {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.login-card {
-    display: flex;
-    width: 700px;
-    min-height: 400px;
-    border-radius: 22px;
-    box-shadow: 0 12px 40px 0 rgba(30, 41, 59, 0.32), 0 1.5px 8px 0 rgba(59, 76, 202, 0.10);
-    overflow: hidden;
-    background: #fff;
-    transition: box-shadow 0.25s, transform 0.18s;
-}
-.login-card.shake {
-    animation: shake 0.35s cubic-bezier(.36,.07,.19,.97) both;
-}
-@keyframes shake {
-    10%, 90% { transform: translateX(-2px); }
-    20%, 80% { transform: translateX(4px); }
-    30%, 50%, 70% { transform: translateX(-8px); }
-    40%, 60% { transform: translateX(8px); }
-}
-.login-left {
-    background: linear-gradient(135deg, #3b4cca 60%, #1e293b 100%);
-    color: #fff;
-    width: 45%;
-    padding: 2.5rem 2rem 2rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    box-shadow: 2px 0 16px 0 rgba(59, 76, 202, 0.08);
-}
-.login-left .icon {
-    font-size: 2.5rem;
-    margin-bottom: 1.2rem;
-    opacity: 0.85;
-    transition: transform 0.2s;
-}
-.login-left .icon:hover {
-    transform: scale(1.08) rotate(-6deg);
-}
-.login-left .system-title {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 2.1rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
-}
-.login-left .system-desc {
-    font-size: 1.1rem;
-    margin-bottom: 1.2rem;
-    font-weight: 400;
-    opacity: 0.95;
-}
-.login-left .system-info {
-    font-size: 0.98rem;
-    opacity: 0.8;
-    margin-bottom: 2.2rem;
-}
-.login-left .secure {
-    font-size: 0.95rem;
-    background: rgba(255,255,255,0.13);
-    border-radius: 8px;
-    padding: 0.3rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: 1px solid rgba(255,255,255,0.18);
-    box-shadow: 0 1px 4px 0 rgba(255,255,255,0.08);
-}
-.login-right {
-    width: 55%;
-    padding: 2.5rem 2.5rem 2rem 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.login-right .welcome {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 0.2rem;
-}
-.login-right .subtitle {
-    color: #64748b;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-}
-form {
-    width: 100%;
-}
-label {
-    font-weight: 600;
-    color: #3b4cca;
-    margin-bottom: 0.2rem;
-    display: block;
-}
-.input-group {
-    margin-bottom: 1.2rem;
-}
-input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 0.7rem 2.2rem 0.7rem 2.2rem;
-    border: 1.5px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 1.08rem;
-    background: #f1f5f9;
-    transition: border 0.2s, box-shadow 0.18s;
-    color: #1e293b;
-    box-shadow: 0 1.5px 6px 0 rgba(59, 76, 202, 0.04);
-}
-input[type="text"]:focus, input[type="password"]:focus {
-    border: 1.5px solid #3b4cca;
-    outline: none;
-    box-shadow: 0 0 0 2px #3b4cca33;
-    background: #e0e7ff;
-}
-.input-icon {
-    position: relative;
-}
-.input-icon svg {
-    position: absolute;
-    left: 0.7rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #3b4cca;
-    font-size: 1.1rem;
-    opacity: 0.8;
-    pointer-events: none;
-}
-input[type="text"], input[type="password"] {
-    padding-left: 2.2rem;
-}
-button[type="submit"] {
-    width: 100%;
-    background: linear-gradient(90deg, #3b4cca 70%, #1e293b 100%);
-    color: #fff;
-    font-weight: 700;
-    border: none;
-    border-radius: 8px;
-    padding: 0.95rem 0;
-    font-size: 1.15rem;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    box-shadow: 0 2px 8px rgba(59, 76, 202, 0.13);
-    transition: background 0.2s, transform 0.13s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.7rem;
-    letter-spacing: 0.5px;
-}
-button[type="submit"]:hover {
-    background: linear-gradient(90deg, #25308a 70%, #1e293b 100%);
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 6px 18px rgba(59, 76, 202, 0.18);
-}
-.login-error {
-    color: #e11d48;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
-    text-align: center;
-    font-weight: 500;
-    letter-spacing: 0.2px;
-    animation: fadeIn 0.4s;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: none; }
-}
-@media (max-width: 800px) {
-    .login-card { flex-direction: column; width: 98vw; min-width: 0; }
-    .login-left, .login-right { width: 100%; padding: 2rem 1.2rem; }
-}
+    /* --- Reset Básico para garantir medidas corretas --- */
+    * { box-sizing: border-box; }
+
+    /* --- Layout Principal --- */
+    .login-main {
+        min-height: 100vh; /* Garante altura total */
+        /* Suporte para altura dinâmica em browsers mobile modernos */
+        min-height: 100dvh; 
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%);
+        padding: 20px;
+    }
+
+    .login-card {
+        display: flex;
+        width: 100%;
+        max-width: 900px; /* Largura máxima para Desktop */
+        min-height: 550px;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        background: #fff;
+        animation: slideUp 0.5s ease forwards;
+    }
+
+    /* Animação de erro (Shake) */
+    .login-card.shake {
+        animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+        10%, 90% { transform: translateX(-1px); }
+        20%, 80% { transform: translateX(2px); }
+        30%, 50%, 70% { transform: translateX(-4px); }
+        40%, 60% { transform: translateX(4px); }
+    }
+
+    /* --- Lado Esquerdo (Azul - Branding) --- */
+    .login-left {
+        background: linear-gradient(135deg, #3b4cca 0%, #1e293b 100%);
+        color: #fff;
+        width: 45%;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .login-left::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.3;
+    }
+
+    .icon-brand {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        transition: transform 0.3s ease;
+    }
+
+    .login-left:hover .icon-brand {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .system-title { font-family: 'Inter', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+    .system-desc { font-size: 1.1rem; opacity: 0.9; font-weight: 400; margin-bottom: 2rem; line-height: 1.4; }
+
+    .secure-badge {
+        margin-top: auto;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+    }
+
+    /* --- Lado Direito (Formulário) --- */
+    .login-right {
+        width: 55%;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: #fff;
+    }
+
+    .welcome-text { font-size: 1.8rem; font-weight: 700; color: #0f172a; margin-bottom: 5px; }
+    .subtitle-text { color: #64748b; font-size: 0.95rem; margin-bottom: 25px; }
+
+    /* --- Inputs e Labels --- */
+    .input-group {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .label-with-icon {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        color: #334155;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .label-with-icon i {
+        color: #3b4cca;
+        font-size: 1rem;
+        width: 20px;
+        text-align: center;
+    }
+
+    .input-wrapper {
+        width: 100%;
+        position: relative;
+    }
+
+    .input-wrapper input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        background: #f8fafc;
+        color: #0f172a;
+        transition: all 0.3s ease;
+    }
+
+    .input-wrapper input:focus {
+        border-color: #3b4cca;
+        background: #fff;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(59, 76, 202, 0.1);
+    }
+
+    /* Botão */
+    .btn-submit {
+        width: 100%;
+        background: linear-gradient(90deg, #3b4cca 0%, #1e293b 100%);
+        color: white;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(59, 76, 202, 0.4);
+    }
+
+    /* Links e Erros */
+    .register-redirect {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+
+    .register-redirect a { color: #3b4cca; text-decoration: none; font-weight: 700; }
+    .register-redirect a:hover { text-decoration: underline; }
+
+    .login-error {
+        background: #fee2e2; color: #ef4444; padding: 12px;
+        border-radius: 8px; margin-top: 15px; font-size: 0.9rem;
+        text-align: center; border: 1px solid #fecaca;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .field-error { color: #dc2626; font-size: 0.8rem; margin-top: 4px; }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================================
+       RESPONSIVIDADE (MEDIA QUERIES)
+       ========================================= */
+
+    /* Tablets e Telas Médias (max-width: 1024px) */
+    @media (max-width: 1024px) {
+        .login-card {
+            max-width: 90%; /* Ocupa mais espaço lateral */
+            min-height: auto;
+        }
+        .login-left, .login-right {
+            padding: 2rem; /* Reduz o padding interno */
+        }
+        .system-title { font-size: 1.6rem; }
+        .icon-brand { font-size: 2.5rem; }
+    }
+
+    /* Mobile - Layout em Coluna (max-width: 768px) */
+    @media (max-width: 768px) {
+        .login-card {
+            flex-direction: column; /* Empilha os elementos */
+            width: 100%;
+            max-width: 450px; /* Limita largura no mobile para ficar bonito */
+        }
+
+        /* Esconde o lado esquerdo no mobile para focar no login */
+        .login-left {
+            display: none;
+        }
+
+        .login-right {
+            width: 100%;
+            padding: 2.5rem;
+        }
+        
+        .welcome-text { text-align: center; font-size: 1.6rem; }
+        .subtitle-text { text-align: center; }
+    }
+
+    /* Celulares Pequenos (max-width: 480px) */
+    @media (max-width: 480px) {
+        .login-main { padding: 15px; }
+        
+        .login-right {
+            padding: 1.5rem;
+        }
+
+        .welcome-text { font-size: 1.5rem; }
+        
+        /* Ajuste de input para evitar zoom no iPhone */
+        .input-wrapper input {
+            font-size: 16px; 
+            padding: 10px 12px;
+        }
+
+        .btn-submit { padding: 12px; }
+    }
 </style>
 
 <div class="login-main">
     <div class="login-card">
         <div class="login-left">
-            <div class="icon">
-                <!-- Ícone de calendário -->
-                <svg width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#fff" fill-opacity=".08"/><path d="M12 14h16M12 10v4m16-4v4m-16 0V10m16 4V10m-20 6v12a2 2 0 002 2h20a2 2 0 002-2V16a2 2 0 00-2-2H8a2 2 0 00-2 2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="icon-brand">
+                <i class="fas fa-calendar-alt"></i>
             </div>
             <div class="system-title">AgendeAqui</div>
             <div class="system-desc">Sistema de Agendamento de Salas e Recursos</div>
-            <div class="system-info">Organize reservas, otimize espaços e facilite a gestão acadêmica em um só lugar.</div>
-            <div class="secure">
-                <svg width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12a2 2 0 100-4 2 2 0 000 4z" stroke="#fff" stroke-width="1.5"/><path d="M3.5 7.5V6a5.5 5.5 0 1111 0v1.5" stroke="#fff" stroke-width="1.5"/><rect x="2.5" y="7.5" width="13" height="8" rx="2" stroke="#fff" stroke-width="1.5"/></svg>
-                Acesso Seguro
+            <div class="system-info">
+                Acesse sua conta para gerenciar suas reservas e horários.
+            </div>
+            <div class="secure-badge">
+                <i class="fas fa-shield-alt"></i> Acesso Seguro
             </div>
         </div>
+
         <div class="login-right">
-            <div class="welcome">Bem-vindo!</div>
-            <div class="subtitle">Faça login para acessar o sistema</div>
+            <div class="welcome-text">Bem-vindo!</div>
+            <div class="subtitle-text">Faça login para acessar o sistema</div>
+            
             <form method="post" id="loginForm">
                 {% csrf_token %}
+                
                 <div class="input-group">
-                    <label for="id_username">Usuário</label>
-                    <div class="input-icon">
-                        <svg width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 9a3 3 0 100-6 3 3 0 000 6zM2 16a7 7 0 0114 0" stroke="#3b4cca" stroke-width="1.5"/></svg>
+                    <div class="label-with-icon">
+                        <i class="fas fa-user"></i>
+                        <label for="id_username">Usuário</label>
+                    </div>
+                    <div class="input-wrapper">
                         {{ form.username }}
                     </div>
+                    {% if form.username.errors %}
+                        <div class="field-error">{{ form.username.errors.0 }}</div>
+                    {% endif %}
                 </div>
+
                 <div class="input-group">
-                    <label for="id_password">Senha</label>
-                    <div class="input-icon">
-                        <svg width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="12" height="7" rx="2" stroke="#3b4cca" stroke-width="1.5"/><path d="M6 8V6a3 3 0 116 0v2" stroke="#3b4cca" stroke-width="1.5"/></svg>
+                    <div class="label-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <label for="id_password">Senha</label>
+                    </div>
+                    <div class="input-wrapper">
                         {{ form.password }}
                     </div>
+                    {% if form.password.errors %}
+                        <div class="field-error">{{ form.password.errors.0 }}</div>
+                    {% endif %}
                 </div>
-                <button type="submit"><svg width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9h10M9 4l5 5-5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> ENTRAR</button>
-            </form>
-            {% if form.errors %}
-                <div class="login-error">Usuário ou senha inválidos.</div>
+
+                <button type="submit" class="btn-submit">
+                    ENTRAR <i class="fas fa-sign-in-alt"></i>
+                </button>
+
+                {% if form.non_field_errors %}
+                    <div class="login-error">
+                        <i class="fas fa-exclamation-circle"></i> {{ form.non_field_errors.0 }}
+                    </div>
+                {% elif form.errors %}
+                    <div class="login-error">
+                        <i class="fas fa-exclamation-circle"></i> Usuário ou senha inválidos.
+                    </div>
+                {% endif %}
+
                 <script>
-                // Shake effect ao erro
-                document.addEventListener('DOMContentLoaded', function() {
-                    var card = document.querySelector('.login-card');
-                    if(card) {
-                        card.classList.remove('shake');
-                        void card.offsetWidth; // reflow
-                        card.classList.add('shake');
-                    }
-                });
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var card = document.querySelector('.login-card');
+                        var hasError = {{ form.errors|yesno:"true,false" }};
+                        if(card && hasError) {
+                            card.classList.remove('shake');
+                            void card.offsetWidth;
+                            card.classList.add('shake');
+                        }
+                    });
                 </script>
-            {% endif %}
-            <script>
-            // Adiciona placeholders nos campos de login
-            document.addEventListener('DOMContentLoaded', function() {
-                var user = document.getElementById('id_username');
-                var pass = document.getElementById('id_password');
-                if(user) user.setAttribute('placeholder', 'Digite seu usuário');
-                if(pass) pass.setAttribute('placeholder', 'Digite sua senha');
-            });
-            </script>
+
+                <div class="register-redirect">
+                    Não tem conta? <a href="{% url 'cadastro' %}">Cadastre-se aqui</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const user = document.getElementById('id_username');
+        const pass = document.getElementById('id_password');
+        
+        if(user) user.setAttribute('placeholder', 'Seu usuário');
+        if(pass) pass.setAttribute('placeholder', 'Sua senha');
+    });
+</script>
 {% endblock %}

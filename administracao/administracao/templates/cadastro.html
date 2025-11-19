@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro - AgendeAqui{% endblock %}
+
+{% block content %}
+<style>
+    body {
+    /* Garante que o fundo do corpo da página seja igual ao fundo do login */
+    background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%) !important;
+    margin: 0;
+    padding: 0;
+}
+    /* --- Layout Principal --- */
+    .cadastro-main {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%);
+        padding: 20px;
+    }
+
+    .cadastro-card {
+        display: flex;
+        width: 850px;
+        min-height: 550px;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        background: #fff;
+        animation: slideUp 0.5s ease forwards;
+    }
+
+    /* --- Lado Esquerdo (Azul) --- */
+    .cadastro-left {
+        background: linear-gradient(135deg, #3b4cca 0%, #1e293b 100%);
+        color: #fff;
+        width: 45%;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+    }
+
+    .cadastro-left::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.3;
+    }
+
+    .icon-brand { font-size: 3rem; margin-bottom: 1rem; color: #fff; }
+    .system-title { font-family: 'Inter', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+    .system-desc { font-size: 1.1rem; opacity: 0.9; font-weight: 400; margin-bottom: 2rem; line-height: 1.4; }
+    
+    .secure-badge {
+        margin-top: auto;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+    }
+
+    /* --- Lado Direito (Formulário) --- */
+    .cadastro-right {
+        width: 55%;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: #fff;
+    }
+
+    .welcome-text {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 5px;
+    }
+
+    .subtitle-text {
+        color: #64748b;
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+
+    /* --- Inputs e Labels (CORREÇÃO AQUI) --- */
+    .input-group {
+        margin-bottom: 18px;
+        /* As linhas abaixo garantem que fique um embaixo do outro */
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .label-with-icon {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px; /* Espaço entre o título e o campo */
+        color: #334155;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .label-with-icon i {
+        color: #3b4cca;
+        font-size: 1rem;
+        width: 20px; /* Garante alinhamento fixo dos ícones */
+        text-align: center;
+    }
+
+    .input-wrapper {
+        width: 100%;
+    }
+
+    .input-wrapper input, input[type="text"], input[type="password"], input[type="email"] {
+        width: 100%;
+        padding: 12px 15px; 
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        background: #f8fafc;
+        color: #0f172a;
+        transition: all 0.2s ease;
+        box-sizing: border-box; /* Garante que padding não estoure a largura */
+    }
+
+    .input-wrapper input:focus {
+        border-color: #3b4cca;
+        background: #fff;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(59, 76, 202, 0.1);
+    }
+
+    /* Botão */
+    .btn-submit {
+        width: 100%;
+        background: linear-gradient(90deg, #3b4cca 0%, #1e293b 100%);
+        color: white;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(59, 76, 202, 0.4);
+    }
+
+    /* Links e Erros */
+    .login-redirect {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+
+    .login-redirect a { color: #3b4cca; text-decoration: none; font-weight: 700; }
+    .login-redirect a:hover { text-decoration: underline; }
+
+    .cadastro-error {
+        background: #fee2e2; color: #ef4444;
+        padding: 10px; border-radius: 8px; margin-top: 15px;
+        font-size: 0.9rem; text-align: center; border: 1px solid #fecaca;
+    }
+    
+    .field-error {
+        color: #dc2626; font-size: 0.8rem; margin-top: 4px;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+        .cadastro-card { flex-direction: column; width: 100%; max-width: 400px; min-height: auto; }
+        .cadastro-left { display: none; }
+        .cadastro-right { width: 100%; padding: 30px; }
+    }
+</style>
+
+<div class="cadastro-main">
+    <div class="cadastro-card">
+        <div class="cadastro-left">
+            <div class="icon-brand"><i class="fas fa-calendar-alt"></i></div>
+            <div class="system-title">AgendeAqui</div>
+            <div class="system-desc">Organize reservas, otimize espaços e facilite a gestão acadêmica em um só lugar.</div>
+            <div class="secure-badge"><i class="fas fa-lock"></i> Cadastro Seguro</div>
+        </div>
+
+        <div class="cadastro-right">
+            <div class="welcome-text">Crie sua conta</div>
+            <div class="subtitle-text">Preencha os dados para se cadastrar</div>
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="input-group">
+                    <div class="label-with-icon">
+                        <i class="fas fa-user"></i>
+                        <label for="id_username">Usuário</label>
+                    </div>
+                    <div class="input-wrapper">
+                        {{ form.username }}
+                    </div>
+                    {% if form.username.errors %}
+                        <div class="field-error">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-group">
+                    <div class="label-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <label for="id_email">E-mail</label>
+                    </div>
+                    <div class="input-wrapper">
+                        {{ form.email }}
+                    </div>
+                    {% if form.email.errors %}
+                        <div class="field-error">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-group">
+                    <div class="label-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <label for="id_password1">Senha</label>
+                    </div>
+                    <div class="input-wrapper">
+                        {{ form.password1 }}
+                    </div>
+                    {% if form.password1.errors %}
+                        <div class="field-error">{{ form.password1.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-group">
+                    <div class="label-with-icon">
+                        <i class="fas fa-check-circle"></i>
+                        <label for="id_password2">Confirmar Senha</label>
+                    </div>
+                    <div class="input-wrapper">
+                        {{ form.password2 }}
+                    </div>
+                    {% if form.password2.errors %}
+                        <div class="field-error">{{ form.password2.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn-submit">CADASTRAR</button>
+            </form>
+
+            {% if form.errors %}
+                <div class="cadastro-error">Verifique os dados informados.</div>
+            {% endif %}
+
+            <div class="login-redirect">
+                Já tem conta? <a href="{% url 'login' %}">Faça login aqui</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = [
+            {id: 'id_username', ph: 'Seu usuário'},
+            {id: 'id_email', ph: 'seu@email.com'},
+            {id: 'id_password1', ph: '********'},
+            {id: 'id_password2', ph: '********'}
+        ];
+
+        inputs.forEach(field => {
+            const el = document.getElementById(field.id);
+            if(el) {
+                el.setAttribute('placeholder', field.ph);
+            }
+        });
+    });
+</script>
+
+{% endblock %}

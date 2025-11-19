@@ -9,14 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* Reset e Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -32,24 +30,20 @@
             position: relative;
         }
 
+        /* Overlay para Mobile */
         .sidebar-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: 999;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+        .sidebar-overlay.active { opacity: 1; }
 
-        .sidebar-overlay.active {
-            opacity: 1;
-        }
-
-        /* Sidebar */
+        /* Estilos da Sidebar */
         .sidebar {
             width: 250px;
             background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
@@ -57,8 +51,7 @@
             padding: 30px 0;
             position: fixed;
             height: 100vh;
-            left: 0;
-            top: 0;
+            left: 0; top: 0;
             box-shadow: 4px 0 15px rgba(0,0,0,0.3);
             z-index: 1000;
             transition: transform 0.3s ease;
@@ -66,57 +59,32 @@
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 25px;
-            margin-bottom: 40px;
+            display: flex; align-items: center; gap: 12px;
+            padding: 0 25px; margin-bottom: 40px;
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: #FF3333;
+            width: 40px; height: 40px;
+            background: #FF3333; /* Cor vermelha da logo */
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 20px;
         }
 
-        .logo-text {
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.2;
-        }
+        .logo-text { font-size: 16px; font-weight: 600; line-height: 1.2; }
+        .logo-subtitle { font-size: 11px; opacity: 0.8; font-weight: 400; }
 
-        .logo-subtitle {
-            font-size: 11px;
-            opacity: 0.8;
-            font-weight: 400;
-        }
-
-        .nav-menu {
-            list-style: none;
-            padding: 0;
-        }
-
-        .nav-item {
-            margin: 0;
-        }
+        .nav-menu { list-style: none; padding: 0; }
+        .nav-item { margin: 0; }
 
         .nav-link-custom {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            display: flex; align-items: center; gap: 12px;
             padding: 14px 25px;
             color: rgba(255,255,255,0.8);
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 14px; font-weight: 500;
         }
 
         .nav-link-custom:hover {
@@ -131,30 +99,21 @@
             border-left-color: #FF3333;
         }
 
-        .nav-link-custom i {
-            font-size: 18px;
-            width: 20px;
-        }
+        .nav-link-custom i { font-size: 18px; width: 20px; }
 
-        .logout-link {
-            position: absolute;
-            bottom: 30px;
-            left: 0;
-            right: 0;
-        }
+        .logout-link { position: absolute; bottom: 30px; left: 0; right: 0; }
 
-        /* Main Content */
+        /* Conteúdo Principal */
         .main-content {
             margin-left: 250px;
             flex: 1;
-            padding: 40px;
-            padding-bottom: 100px;
+            padding: 40px; padding-bottom: 100px;
             width: calc(100% - 250px);
             max-width: calc(100% - 250px);
             transition: margin-left 0.3s ease, width 0.3s ease;
         }
 
-        /* Footer */
+        /* Rodapé */
         .footer {
             margin-left: 250px;
             width: calc(100% - 250px);
@@ -166,178 +125,78 @@
         }
 
         .footer-content {
-            display: flex;
-            justify-content: center; 
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            text-align: center;
+            display: flex; justify-content: center; align-items: center;
+            flex-wrap: wrap; gap: 20px; text-align: center;
         }
 
         .footer-left {
-            display: flex;
-            flex-direction: column;
-            align-items: center; 
-            gap: 8px;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
         }
 
         .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-            font-weight: 600;
+            display: flex; align-items: center; gap: 10px;
+            font-size: 16px; font-weight: 600;
         }
 
-        .footer-brand i {
-            color: #007bff;
-            font-size: 20px;
-        }
-
-        .footer-text {
-            font-size: 13px;
-            color: rgba(255,255,255,0.7);
-        }
-
+        .footer-brand i { color: #007bff; font-size: 20px; } /* Azul conforme pedido */
+        .footer-text { font-size: 13px; color: rgba(255,255,255,0.7); }
         .footer-divider {
-            width: 100%;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-            margin: 20px 0;
+            width: 100%; height: 1px;
+            background: rgba(255,255,255,0.1); margin: 20px 0;
         }
 
         .footer-bottom {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            color: rgba(255,255,255,0.6);
-            flex-wrap: wrap;
-            gap: 10px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 12px; color: rgba(255,255,255,0.6);
+            flex-wrap: wrap; gap: 10px;
         }
+        .footer-copyright { display: flex; align-items: center; gap: 5px; }
 
-        .footer-copyright {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* Mobile Header */
+        /* Header Mobile */
         .mobile-header {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
-            background: #1a1a1a;
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1001;
+            display: none; align-items: center; justify-content: space-between;
+            padding: 15px 20px; background: #1a1a1a; color: white;
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1001;
         }
 
         .hamburger-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
+            background: none; border: none; color: white;
+            font-size: 20px; cursor: pointer;
         }
 
-        .mobile-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-        }
+        .mobile-logo { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .mobile-logo-icon { color: #FF3333; }
 
-        .mobile-logo-icon {
-            color: #FF3333;
-        }
-
-        /* Tablets */
+        /* Media Queries */
         @media (max-width: 1024px) {
-            .main-content {
-                padding: 30px;
-            }
-
-            .footer {
-                padding: 25px 30px;
-            }
+            .main-content { padding: 30px; }
+            .footer { padding: 25px 30px; }
         }
 
-        /* Mobile */
         @media (max-width: 768px) {
-            .mobile-header {
-                display: flex;
-            }
-
-            .sidebar {
-                transform: translateX(-100%);
-                top: 0;
-                height: 100vh;
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .sidebar-overlay {
-                display: block;
-            }
-
-            .main-content {
-                margin-left: 0;
-                margin-top: 60px;
-                width: 100%;
-                max-width: 100%;
-                padding: 20px;
-                padding-bottom: 80px;
-            }
-
-            .footer {
-                margin-left: 0;
-                width: 100%;
-                padding: 20px;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                /* ALTERADO: Garante centralização no mobile */
-                align-items: center; 
-                gap: 15px;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                /* ALTERADO: Garante centralização no mobile */
-                align-items: center;
-                gap: 8px;
-            }
-        }
-
-        /* Small Mobile */
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 15px;
-                padding-bottom: 60px;
-            }
-
-            .footer {
-                padding: 15px;
-            }
+            .mobile-header { display: flex; }
             
-            .footer-text {
-                font-size: 12px;
+            .sidebar { transform: translateX(-100%); top: 0; height: 100vh; }
+            .sidebar.active { transform: translateX(0); }
+            .sidebar-overlay { display: block; }
+
+            .main-content {
+                margin-left: 0; margin-top: 60px;
+                width: 100%; max-width: 100%;
+                padding: 20px; padding-bottom: 80px;
             }
+
+            .footer { margin-left: 0; width: 100%; padding: 20px; }
+            .footer-content, .footer-bottom { flex-direction: column; align-items: center; gap: 15px; }
         }
 
         {% block extra_css %}{% endblock %}
     </style>
 </head>
 <body>
-    {% if request.path != '/login/' and request.path != '/' %}
+    {% if not request.resolver_match %}
+    
+    {% elif request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'root_login' and request.resolver_match.url_name != 'cadastro' and request.resolver_match.url_name != 'home' %}
     
     <div class="mobile-header">
         <button class="hamburger-btn" id="hamburgerBtn">
@@ -349,8 +208,7 @@
             </div>
             <span>AgendeAqui</span>
         </div>
-        <div style="width: 40px;"></div> 
-    </div>
+        <div style="width: 40px;"></div> </div>
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     
@@ -379,7 +237,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'salas:salas' %}" class="nav-link-custom {% block nav_salas %}{% endblock %}">
+                <a href="{% url 'salas:list' %}" class="nav-link-custom {% block nav_salas %}{% endblock %}">
                     <i class="fas fa-door-open"></i>
                     <span>Salas</span>
                 </a>
@@ -408,13 +266,23 @@
     {% endif %}
 
     <div class="page-wrapper">
-        <main class="main-content" style="{% if request.path == '/login/' or request.path == '/' %}margin-left:0;width:100%;max-width:100%;{% endif %}">
+        <main class="main-content" style="{% if request.resolver_match %}{% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'root_login' or request.resolver_match.url_name == 'cadastro' or request.resolver_match.url_name == 'home' %}margin-left:0;width:100%;max-width:100%;padding:0;{% endif %}{% endif %}">
+            {% if messages %}
+                <div class="container mt-3">
+                    {% for msg in messages %}
+                        <div class="alert alert-{{ msg.tags }} alert-dismissible fade show" role="alert">
+                            {{ msg }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% block content %}
             {% endblock %}
         </main>
     </div>
 
-    <footer class="footer" style="{% if request.path == '/login/' or request.path == '/' %}margin-left:0;width:100%;{% endif %}">
+    <footer class="footer" style="{% if request.resolver_match %}{% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'root_login' or request.resolver_match.url_name == 'cadastro' or request.resolver_match.url_name == 'home' %}margin-left:0;width:100%;{% endif %}{% endif %}">
         <div class="footer-content">
             <div class="footer-left">
                 <div class="footer-brand">
@@ -436,7 +304,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
@@ -468,7 +335,7 @@
             sidebarOverlay.addEventListener('click', closeSidebar);
         }
 
-        // Close sidebar when clicking on a link (mobile)
+        // Fecha a sidebar ao clicar em link no mobile
         const navLinks = document.querySelectorAll('.sidebar .nav-link-custom');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -478,7 +345,7 @@
             });
         });
 
-        // Close sidebar on window resize to desktop
+        // Fecha sidebar ao redimensionar para desktop
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 closeSidebar();
