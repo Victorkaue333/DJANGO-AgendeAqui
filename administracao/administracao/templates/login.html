@@ -4,9 +4,21 @@
 
 {% block content %}
 <style>
+  
+    body {
+    /* Garante que o fundo do corpo da página seja igual ao fundo do login */
+    background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%) !important;
+    margin: 0;
+    padding: 0;
+}
+    /* --- Reset Básico para garantir medidas corretas --- */
+    * { box-sizing: border-box; }
+
     /* --- Layout Principal --- */
     .login-main {
-        min-height: 100vh;
+        min-height: 100vh; /* Garante altura total */
+        /* Suporte para altura dinâmica em browsers mobile modernos */
+        min-height: 100dvh; 
         width: 100%;
         display: flex;
         align-items: center;
@@ -17,8 +29,9 @@
 
     .login-card {
         display: flex;
-        width: 800px;
-        min-height: 500px;
+        width: 100%;
+        max-width: 900px; /* Largura máxima para Desktop */
+        min-height: 550px;
         border-radius: 20px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         overflow: hidden;
@@ -38,7 +51,7 @@
         40%, 60% { transform: translateX(4px); }
     }
 
-    /* --- Lado Esquerdo (Azul) --- */
+    /* --- Lado Esquerdo (Azul - Branding) --- */
     .login-left {
         background: linear-gradient(135deg, #3b4cca 0%, #1e293b 100%);
         color: #fff;
@@ -48,6 +61,7 @@
         flex-direction: column;
         justify-content: center;
         position: relative;
+        transition: all 0.3s ease;
     }
 
     .login-left::before {
@@ -98,7 +112,7 @@
     .welcome-text { font-size: 1.8rem; font-weight: 700; color: #0f172a; margin-bottom: 5px; }
     .subtitle-text { color: #64748b; font-size: 0.95rem; margin-bottom: 25px; }
 
-    /* --- Inputs e Labels (ATUALIZADO) --- */
+    /* --- Inputs e Labels --- */
     .input-group {
         margin-bottom: 20px;
         display: flex;
@@ -107,7 +121,6 @@
         width: 100%;
     }
 
-    /* Container para Ícone + Texto do Label */
     .label-with-icon {
         display: flex;
         align-items: center;
@@ -130,17 +143,15 @@
         position: relative;
     }
 
-    /* Input limpo sem padding extra na esquerda */
     .input-wrapper input {
         width: 100%;
-        padding: 12px 15px; 
+        padding: 12px 15px;
         border: 2px solid #e2e8f0;
         border-radius: 10px;
         font-size: 0.95rem;
         background: #f8fafc;
         color: #0f172a;
         transition: all 0.3s ease;
-        box-sizing: border-box;
     }
 
     .input-wrapper input:focus {
@@ -191,7 +202,7 @@
         text-align: center; border: 1px solid #fecaca;
         display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    
+
     .field-error { color: #dc2626; font-size: 0.8rem; margin-top: 4px; }
 
     @keyframes slideUp {
@@ -199,11 +210,62 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Mobile */
-    @media (max-width: 900px) {
-        .login-card { flex-direction: column; width: 100%; max-width: 400px; min-height: auto; }
-        .login-left { display: none; }
-        .login-right { width: 100%; padding: 30px; }
+    /* =========================================
+       RESPONSIVIDADE (MEDIA QUERIES)
+       ========================================= */
+
+    /* Tablets e Telas Médias (max-width: 1024px) */
+    @media (max-width: 1024px) {
+        .login-card {
+            max-width: 90%; /* Ocupa mais espaço lateral */
+            min-height: auto;
+        }
+        .login-left, .login-right {
+            padding: 2rem; /* Reduz o padding interno */
+        }
+        .system-title { font-size: 1.6rem; }
+        .icon-brand { font-size: 2.5rem; }
+    }
+
+    /* Mobile - Layout em Coluna (max-width: 768px) */
+    @media (max-width: 768px) {
+        .login-card {
+            flex-direction: column; /* Empilha os elementos */
+            width: 100%;
+            max-width: 450px; /* Limita largura no mobile para ficar bonito */
+        }
+
+        /* Esconde o lado esquerdo no mobile para focar no login */
+        .login-left {
+            display: none;
+        }
+
+        .login-right {
+            width: 100%;
+            padding: 2.5rem;
+        }
+        
+        .welcome-text { text-align: center; font-size: 1.6rem; }
+        .subtitle-text { text-align: center; }
+    }
+
+    /* Celulares Pequenos (max-width: 480px) */
+    @media (max-width: 480px) {
+        .login-main { padding: 15px; }
+        
+        .login-right {
+            padding: 1.5rem;
+        }
+
+        .welcome-text { font-size: 1.5rem; }
+        
+        /* Ajuste de input para evitar zoom no iPhone */
+        .input-wrapper input {
+            font-size: 16px; 
+            padding: 10px 12px;
+        }
+
+        .btn-submit { padding: 12px; }
     }
 </style>
 
