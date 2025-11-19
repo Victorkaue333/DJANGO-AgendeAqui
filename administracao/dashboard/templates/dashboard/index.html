@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - AgendeAqui{% endblock %}
+
+{% block extra_css %}
+<style>
+  .quick-cards { display:flex; gap:16px; flex-wrap:wrap; }
+  .quick-card { flex:1 1 220px; background: linear-gradient(180deg,#0b1220,#0f172a); color:#fff; padding:18px; border-radius:12px; box-shadow:0 6px 18px rgba(2,6,23,0.6); }
+  .quick-card a { color: #fff; text-decoration: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row align-items-center mb-4">
+    <div class="col-12">
+      <h1 class="mb-1">Painel</h1>
+      <p class="text-muted">Visão geral rápida — acesse os principais recursos abaixo.</p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="quick-cards">
+        <div class="quick-card">
+          <h5>Agendamentos</h5>
+          <p class="small">Visualizar e gerenciar reservas ativas.</p>
+          <a href="{% url 'agendamentos:agendamentos' %}" class="btn btn-light btn-sm mt-2">Abrir Agendamentos</a>
+        </div>
+
+        <div class="quick-card">
+          <h5>Salas e Labs</h5>
+          <p class="small">Gerencie salas, laboratórios e recursos.</p>
+          <a href="{% url 'salas:list' %}" class="btn btn-light btn-sm mt-2">Gerenciar Salas</a>
+        </div>
+
+        <div class="quick-card">
+          <h5>Relatórios</h5>
+          <p class="small">Acesse relatórios de uso e estatísticas.</p>
+          <a href="{% url 'relatorios:index' %}" class="btn btn-light btn-sm mt-2">Ver Relatórios</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Resumo do dia</h5>
+          <p class="card-text text-muted">Aqui você verá indicadores rápidos, próximos agendamentos e alertas importantes.</p>
+          <!-- Placeholder: gráficos e widgets são adicionados nas próximas etapas -->
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h6 class="mb-2">Atalhos</h6>
+          <ul class="list-unstyled small">
+            <li><a href="{% url 'salas:list' %}">Criar nova sala</a></li>
+            <li><a href="{% url 'agendamentos:agendamentos' %}">Novo agendamento</a></li>
+            <li><a href="{% url 'relatorios:index' %}">Gerar relatório</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

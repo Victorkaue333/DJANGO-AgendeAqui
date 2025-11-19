@@ -1,0 +1,15 @@
+/* Arquivo estático mínimo para evitar 404 em templates */
+
+/* Reset básico adicional para garantir consistência entre navegadores */
+img, svg { max-width: 100%; height: auto; }
+
+/* Helpers responsivos */
+.container { width: 100%; padding-left: 15px; padding-right: 15px; margin-left: auto; margin-right: auto; }
+
+/* Ajustes de tipografia usados por templates */
+.text-muted { color: rgba(0,0,0,0.45); }
+
+/* Pequenas melhorias para o layout mobile */
+@media (max-width: 768px) {
+    .hero, .section-header { padding-left: 20px; padding-right: 20px; }
+}

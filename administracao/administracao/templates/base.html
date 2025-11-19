@@ -6,22 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AgendeAqui{% endblock %}</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Custom CSS (Se existir) -->
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     
     <style>
+        /* --- VARIÁVEIS GLOBAIS (Tema Dark Moderno) --- */
+        :root {
+            --primary-color: #6366f1; /* Indigo vibrante */
+            --primary-hover: #4f46e5;
+            --bg-dark: #020617; /* Slate 950 */
+            --bg-card: #0f172a; /* Slate 900 */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --sidebar-width: 260px;
+        }
+
         /* Reset e Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f7fa;
+            background-color: #f5f7fa; /* Fundo padrão claro para painel */
+            color: #334155;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+
+        /* Ajuste para páginas que usam tema escuro (Login/Landing) */
+        body.dark-theme {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
         }
 
         .page-wrapper {
@@ -30,32 +53,20 @@
             position: relative;
         }
 
-        /* Overlay para Mobile */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .sidebar-overlay.active { opacity: 1; }
-
-        /* Estilos da Sidebar */
+        /* --- SIDEBAR (Painel Administrativo) --- */
         .sidebar {
-            width: 250px;
-            background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
             color: white;
             padding: 30px 0;
             position: fixed;
             height: 100vh;
             left: 0; top: 0;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
             z-index: 1000;
             transition: transform 0.3s ease;
             overflow-y: auto;
+            border-right: 1px solid var(--border-color);
         }
 
         .logo {
@@ -65,112 +76,164 @@
 
         .logo-icon {
             width: 40px; height: 40px;
-            background: #FF3333; /* Cor vermelha da logo */
-            border-radius: 8px;
+            background: #FF3333;
+            border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 20px;
+            color: white; font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(255, 51, 51, 0.3);
         }
 
-        .logo-text { font-size: 16px; font-weight: 600; line-height: 1.2; }
-        .logo-subtitle { font-size: 11px; opacity: 0.8; font-weight: 400; }
+        .logo-text { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.5px; }
+        .logo-subtitle { font-size: 0.75rem; opacity: 0.6; font-weight: 400; margin-top: 2px; }
 
-        .nav-menu { list-style: none; padding: 0; }
-        .nav-item { margin: 0; }
+        .nav-menu { list-style: none; padding: 0 15px; }
+        .nav-item { margin-bottom: 5px; }
 
         .nav-link-custom {
             display: flex; align-items: center; gap: 12px;
-            padding: 14px 25px;
-            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            color: #94a3b8;
             text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-            font-size: 14px; font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 0.95rem; font-weight: 500;
         }
 
         .nav-link-custom:hover {
-            background: rgba(255, 51, 51, 0.15);
+            background: rgba(255, 255, 255, 0.05);
             color: white;
-            border-left-color: #FF3333;
+            transform: translateX(4px);
         }
 
         .nav-link-custom.active {
-            background: rgba(255, 51, 51, 0.2);
+            background: var(--primary-color);
             color: white;
-            border-left-color: #FF3333;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
-        .nav-link-custom i { font-size: 18px; width: 20px; }
+        .nav-link-custom i { font-size: 1.1rem; width: 24px; text-align: center; }
 
-        .logout-link { position: absolute; bottom: 30px; left: 0; right: 0; }
+        .logout-link { 
+            position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 15px;
+        }
+        .logout-link a {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logout-link a:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
 
-        /* Conteúdo Principal */
+        /* --- CONTEÚDO PRINCIPAL --- */
         .main-content {
-            margin-left: 250px;
+            margin-left: var(--sidebar-width);
             flex: 1;
             padding: 40px; padding-bottom: 100px;
-            width: calc(100% - 250px);
-            max-width: calc(100% - 250px);
+            width: calc(100% - var(--sidebar-width));
+            max-width: calc(100% - var(--sidebar-width));
             transition: margin-left 0.3s ease, width 0.3s ease;
         }
 
-        /* Rodapé */
+        /* --- RODAPÉ (FOOTER) MELHORADO --- */
         .footer {
-            margin-left: 250px;
-            width: calc(100% - 250px);
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: white;
-            padding: 30px 40px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            background-color: #0f172a; /* Fundo escuro sólido */
+            color: #cbd5e1;
+            padding: 60px 0 30px 0;
+            border-top: 1px solid var(--border-color);
             transition: margin-left 0.3s ease, width 0.3s ease;
         }
 
-        .footer-content {
-            display: flex; justify-content: center; align-items: center;
-            flex-wrap: wrap; gap: 20px; text-align: center;
+        .footer h5 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
         }
 
-        .footer-left {
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
+        .footer-links {
+            list-style: none;
+            padding: 0;
         }
 
-        .footer-brand {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 16px; font-weight: 600;
+        .footer-links li {
+            margin-bottom: 0.8rem;
         }
 
-        .footer-brand i { color: #007bff; font-size: 20px; } /* Azul conforme pedido */
-        .footer-text { font-size: 13px; color: rgba(255,255,255,0.7); }
-        .footer-divider {
-            width: 100%; height: 1px;
-            background: rgba(255,255,255,0.1); margin: 20px 0;
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .footer-social a {
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
         }
 
         .footer-bottom {
-            display: flex; justify-content: center; align-items: center;
-            font-size: 12px; color: rgba(255,255,255,0.6);
-            flex-wrap: wrap; gap: 10px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
         }
-        .footer-copyright { display: flex; align-items: center; gap: 5px; }
 
-        /* Header Mobile */
+        /* --- MOBILE HEADER --- */
         .mobile-header {
-            display: none; align-items: center; justify-content: space-between;
-            padding: 15px 20px; background: #1a1a1a; color: white;
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1001;
+            display: none;
+            align-items: center; justify-content: space-between;
+            padding: 15px 20px;
+            background: rgba(15, 23, 42, 0.95); /* Fundo escuro com leve transparência */
+            backdrop-filter: blur(10px);
+            color: white;
+            position: fixed; top: 0; left: 0; width: 100%;
+            z-index: 1001;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .hamburger-btn {
             background: none; border: none; color: white;
-            font-size: 20px; cursor: pointer;
+            font-size: 24px; cursor: pointer; padding: 5px;
         }
 
-        .mobile-logo { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-        .mobile-logo-icon { color: #FF3333; }
+        /* Overlay Mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .sidebar-overlay.active { opacity: 1; }
 
-        /* Media Queries */
+
+        /* --- RESPONSIVIDADE --- */
         @media (max-width: 1024px) {
             .main-content { padding: 30px; }
-            .footer { padding: 25px 30px; }
         }
 
         @media (max-width: 768px) {
@@ -181,130 +244,191 @@
             .sidebar-overlay { display: block; }
 
             .main-content {
-                margin-left: 0; margin-top: 60px;
-                width: 100%; max-width: 100%;
+                margin-left: 0 !important; 
+                margin-top: 60px; /* Espaço para o header mobile */
+                width: 100% !important; 
+                max-width: 100% !important;
                 padding: 20px; padding-bottom: 80px;
             }
 
-            .footer { margin-left: 0; width: 100%; padding: 20px; }
-            .footer-content, .footer-bottom { flex-direction: column; align-items: center; gap: 15px; }
+            .footer { margin-left: 0 !important; width: 100% !important; text-align: center; }
+            .footer-left { align-items: center; margin-bottom: 30px; }
+            .col-lg-3, .col-md-6 { margin-bottom: 30px; }
         }
 
         {% block extra_css %}{% endblock %}
     </style>
 </head>
 <body>
-    {% if not request.resolver_match %}
-    
-    {% elif request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'root_login' and request.resolver_match.url_name != 'cadastro' and request.resolver_match.url_name != 'home' %}
-    
-    <div class="mobile-header">
-        <button class="hamburger-btn" id="hamburgerBtn">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="mobile-logo">
-            <div class="mobile-logo-icon">
-                <i class="fas fa-calendar-alt"></i>
+    <!-- Verifica se a rota atual é Login, Cadastro ou Home para esconder a Sidebar -->
+    {% with request.resolver_match.url_name as url_name %}
+        {% if url_name != 'login' and url_name != 'root_login' and url_name != 'cadastro' and url_name != 'home' %}
+        
+        <!-- Mobile Header (Só aparece em telas pequenas) -->
+        <div class="mobile-header">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-logo font-weight-bold d-flex align-items-center gap-2">
+                <i class="fas fa-calendar-alt text-danger"></i>
+                AgendeAqui
             </div>
-            <span>AgendeAqui</span>
-        </div>
-        <div style="width: 40px;"></div> </div>
-
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    
-    <aside class="sidebar" id="sidebar">
-        <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-calendar-alt"></i>
-            </div>
-            <div>
-                <div class="logo-text">AgendeAqui</div>
-                <div class="logo-subtitle">Agendamento de Salas e Recursos</div>
-            </div>
+            <div style="width: 34px;"></div> <!-- Espaçador para centralizar logo -->
         </div>
 
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="{% url 'index' %}" class="nav-link-custom {% block nav_home %}{% endblock %}">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{% url 'agendamentos:agendamentos' %}" class="nav-link-custom {% block nav_agendamentos %}{% endblock %}">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Agendamentos</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{% url 'salas:list' %}" class="nav-link-custom {% block nav_salas %}{% endblock %}">
-                    <i class="fas fa-door-open"></i>
-                    <span>Salas</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{% url 'relatorios:index' %}" class="nav-link-custom {% block nav_relatorios %}{% endblock %}">
-                    <i class="fas fa-file-alt"></i>
-                    <span>Relatórios</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link-custom {% block nav_perfil %}{% endblock %}">
-                    <i class="fas fa-user"></i>
-                    <span>Perfil</span>
-                </a>
-            </li>
-        </ul>
+        <!-- Overlay para fechar menu ao clicar fora -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar Principal -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div>
+                    <div class="logo-text">AgendeAqui</div>
+                    <div class="logo-subtitle">Gestão Acadêmica</div>
+                </div>
+            </div>
 
-        <div class="logout-link">
-            <a href="{% url 'logout' %}" class="nav-link-custom">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Sair</span>
-            </a>
-        </div>
-    </aside>
-    {% endif %}
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{% url 'index' %}" class="nav-link-custom {% if request.path == '/' or 'dashboard' in request.path %}active{% endif %}">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'agendamentos:agendamentos' %}" class="nav-link-custom {% if 'agendamentos' in request.path %}active{% endif %}">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Agendamentos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'salas:list' %}" class="nav-link-custom {% if 'salas' in request.path %}active{% endif %}">
+                        <i class="fas fa-door-open"></i>
+                        <span>Salas e Labs</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'relatorios:index' %}" class="nav-link-custom {% if 'relatorios' in request.path %}active{% endif %}">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Relatórios</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link-custom">
+                        <i class="fas fa-cog"></i>
+                        <span>Configurações</span>
+                    </a>
+                </li>
+            </ul>
 
-    <div class="page-wrapper">
-        <main class="main-content" style="{% if request.resolver_match %}{% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'root_login' or request.resolver_match.url_name == 'cadastro' or request.resolver_match.url_name == 'home' %}margin-left:0;width:100%;max-width:100%;padding:0;{% endif %}{% endif %}">
-            {% if messages %}
-                <div class="container mt-3">
+            <div class="logout-link">
+                <a href="{% url 'logout' %}" class="nav-link-custom justify-content-center">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair do Sistema</span>
+                </a>
+            </div>
+        </aside>
+        {% endif %}
+
+        <!-- Conteúdo Principal -->
+        <!-- Se for página pública (Login/Cadastro/Home), remove margens e padding extra -->
+        <main class="main-content" style="{% if url_name == 'login' or url_name == 'root_login' or url_name == 'cadastro' or url_name == 'home' %}margin-left:0;width:100%;max-width:100%;padding:0;margin-top:0;{% endif %}">
+            
+            <!-- Mensagens de Feedback (Sucesso/Erro) -->
+            {% if messages and url_name != 'login' and url_name != 'cadastro' %}
+                <div class="container-fluid px-4 mt-3">
                     {% for msg in messages %}
-                        <div class="alert alert-{{ msg.tags }} alert-dismissible fade show" role="alert">
-                            {{ msg }}
+                        <div class="alert alert-{{ msg.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                            <i class="fas fa-info-circle me-2"></i> {{ msg }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
                         </div>
                     {% endfor %}
                 </div>
             {% endif %}
+
+            <!-- Injeção do Conteúdo das Páginas -->
             {% block content %}
             {% endblock %}
         </main>
-    </div>
 
-    <footer class="footer" style="{% if request.resolver_match %}{% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'root_login' or request.resolver_match.url_name == 'cadastro' or request.resolver_match.url_name == 'home' %}margin-left:0;width:100%;{% endif %}{% endif %}">
-        <div class="footer-content">
-            <div class="footer-left">
-                <div class="footer-brand">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>AgendeAqui</span>
+        <!-- Rodapé Profissional (Só aparece completo se não for Dashboard interno) -->
+        <!-- Nota: Para Dashboards, geralmente se usa um footer simples ou nenhum. Aqui mantivemos a lógica de esconder a margem se for página pública. -->
+        <footer class="footer" style="{% if url_name == 'login' or url_name == 'root_login' or url_name == 'cadastro' or url_name == 'home' %}margin-left:0;width:100%;{% endif %}">
+            <div class="container">
+                <div class="row">
+                    <!-- Coluna 1: Marca e Sobre -->
+                    <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 footer-left text-center text-md-start">
+                        <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-3">
+                            <div style="width:32px; height:32px; background:#FF3333; border-radius:6px; display:flex; align-items:center; justify-content:center; color:white;">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <span style="font-size:1.25rem; font-weight:700; color:white;">AgendeAqui</span>
+                        </div>
+                        <p style="font-size:0.9rem; line-height:1.6; max-width: 300px; margin: 0 auto 0 0;">
+                            A solução completa para gestão de espaços acadêmicos. Simplifique reservas, otimize recursos e elimine conflitos na sua instituição.
+                        </p>
+                        <div class="footer-social mt-3">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Coluna 2: Links Rápidos -->
+                    <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                        <h5>Produto</h5>
+                        <ul class="footer-links">
+                            <li><a href="#">Recursos</a></li>
+                            <li><a href="#">Preços</a></li>
+                            <li><a href="#">Para Escolas</a></li>
+                            <li><a href="#">Para Universidades</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Coluna 3: Suporte -->
+                    <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                        <h5>Suporte</h5>
+                        <ul class="footer-links">
+                            <li><a href="#">Central de Ajuda</a></li>
+                            <li><a href="#">Documentação</a></li>
+                            <li><a href="#">Status do Sistema</a></li>
+                            <li><a href="#">Fale Conosco</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Coluna 4: Legal -->
+                    <div class="col-lg-4 col-md-6">
+                        <h5>Fique por dentro</h5>
+                        <p style="font-size:0.9rem;">Receba novidades e atualizações da plataforma.</p>
+                        <form class="d-flex gap-2 mt-2">
+                            <input type="email" class="form-control bg-dark border-secondary text-white" placeholder="Seu e-mail" style="border:1px solid rgba(255,255,255,0.1);">
+                            <button class="btn btn-primary" type="button">Assinar</button>
+                        </form>
+                    </div>
                 </div>
-                <p class="footer-text">Sistema de agendamento de salas e recursos</p>
+
+                <div class="footer-bottom">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                            &copy; 2025 AgendeAqui. Todos os direitos reservados.
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <a href="#" class="text-muted text-decoration-none me-3 small">Privacidade</a>
+                            <a href="#" class="text-muted text-decoration-none me-3 small">Termos de Uso</a>
+                            <a href="#" class="text-muted text-decoration-none small">Cookies</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </footer>
+    {% endwith %}
 
-        <div class="footer-divider"></div>
-
-        <div class="footer-bottom">
-            <div class="footer-copyright">
-                <i class="far fa-copyright"></i>
-                <span>2025 AgendeAqui. Todos os direitos reservados.</span>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     
     <script>
         const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -315,6 +439,7 @@
             if(sidebar && sidebarOverlay) {
                 sidebar.classList.toggle('active');
                 sidebarOverlay.classList.toggle('active');
+                // Bloqueia rolagem do corpo quando menu aberto
                 document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
             }
         }
@@ -335,7 +460,7 @@
             sidebarOverlay.addEventListener('click', closeSidebar);
         }
 
-        // Fecha a sidebar ao clicar em link no mobile
+        // Fecha sidebar ao clicar em link (mobile UX)
         const navLinks = document.querySelectorAll('.sidebar .nav-link-custom');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -345,7 +470,7 @@
             });
         });
 
-        // Fecha sidebar ao redimensionar para desktop
+        // Reset visual ao redimensionar tela
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 closeSidebar();
