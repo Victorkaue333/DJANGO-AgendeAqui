@@ -196,7 +196,7 @@
 <body>
     {% if not request.resolver_match %}
     
-    {% elif request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'root_login' and request.resolver_match.url_name != 'cadastro' %}
+    {% elif request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'root_login' and request.resolver_match.url_name != 'cadastro' and request.resolver_match.url_name != 'home' %}
     
     <div class="mobile-header">
         <button class="hamburger-btn" id="hamburgerBtn">
@@ -237,7 +237,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'salas:salas' %}" class="nav-link-custom {% block nav_salas %}{% endblock %}">
+                <a href="{% url 'salas:list' %}" class="nav-link-custom {% block nav_salas %}{% endblock %}">
                     <i class="fas fa-door-open"></i>
                     <span>Salas</span>
                 </a>
@@ -266,7 +266,7 @@
     {% endif %}
 
     <div class="page-wrapper">
-        <main class="main-content" style="{% if request.resolver_match %}{% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'root_login' or request.resolver_match.url_name == 'cadastro' %}margin-left:0;width:100%;max-width:100%;padding:0;{% endif %}{% endif %}">
+        <main class="main-content" style="{% if request.resolver_match %}{% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'root_login' or request.resolver_match.url_name == 'cadastro' or request.resolver_match.url_name == 'home' %}margin-left:0;width:100%;max-width:100%;padding:0;{% endif %}{% endif %}">
             {% if messages %}
                 <div class="container mt-3">
                     {% for msg in messages %}
@@ -282,7 +282,7 @@
         </main>
     </div>
 
-    <footer class="footer" style="{% if request.resolver_match %}{% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'root_login' or request.resolver_match.url_name == 'cadastro' %}margin-left:0;width:100%;{% endif %}{% endif %}">
+    <footer class="footer" style="{% if request.resolver_match %}{% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'root_login' or request.resolver_match.url_name == 'cadastro' or request.resolver_match.url_name == 'home' %}margin-left:0;width:100%;{% endif %}{% endif %}">
         <div class="footer-content">
             <div class="footer-left">
                 <div class="footer-brand">
