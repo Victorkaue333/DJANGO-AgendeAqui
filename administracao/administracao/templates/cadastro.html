@@ -4,14 +4,13 @@
 
 {% block content %}
 <style>
-    /* Estilo específico para cobrir o fundo claro do base.html */
+    /* --- Layout Principal --- */
     .cadastro-main {
         min-height: 100vh;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Fundo Escuro igual ao do Login */
         background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%);
         padding: 20px;
     }
@@ -19,7 +18,7 @@
     .cadastro-card {
         display: flex;
         width: 850px;
-        min-height: 500px;
+        min-height: 550px;
         border-radius: 20px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         overflow: hidden;
@@ -27,7 +26,7 @@
         animation: slideUp 0.5s ease forwards;
     }
 
-    /* Lado Esquerdo - Azul */
+    /* --- Lado Esquerdo (Azul) --- */
     .cadastro-left {
         background: linear-gradient(135deg, #3b4cca 0%, #1e293b 100%);
         color: #fff;
@@ -47,28 +46,10 @@
         opacity: 0.3;
     }
 
-    .icon-brand {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        color: #fff;
-    }
-
-    .system-title {
-        font-family: 'Inter', sans-serif;
-        font-size: 2rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.5px;
-    }
-
-    .system-desc {
-        font-size: 1.1rem;
-        opacity: 0.9;
-        font-weight: 400;
-        margin-bottom: 2rem;
-        line-height: 1.4;
-    }
-
+    .icon-brand { font-size: 3rem; margin-bottom: 1rem; color: #fff; }
+    .system-title { font-family: 'Inter', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+    .system-desc { font-size: 1.1rem; opacity: 0.9; font-weight: 400; margin-bottom: 2rem; line-height: 1.4; }
+    
     .secure-badge {
         margin-top: auto;
         background: rgba(255, 255, 255, 0.1);
@@ -82,7 +63,7 @@
         width: fit-content;
     }
 
-    /* Lado Direito - Formulário */
+    /* --- Lado Direito (Formulário) --- */
     .cadastro-right {
         width: 55%;
         padding: 3rem;
@@ -105,35 +86,47 @@
         margin-bottom: 25px;
     }
 
-    /* Estilização dos Inputs */
+    /* --- Inputs e Labels (CORREÇÃO AQUI) --- */
     .input-group {
-        margin-bottom: 15px;
-        position: relative;
+        margin-bottom: 18px;
+        /* As linhas abaixo garantem que fique um embaixo do outro */
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start;
+        width: 100%;
     }
 
-    /* Ajuste para ícone acima do input */
-    .input-icon {
+    .label-with-icon {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.2rem;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px; /* Espaço entre o título e o campo */
+        color: #334155;
+        font-weight: 600;
+        font-size: 0.9rem;
     }
-    .input-icon svg {
-        margin-bottom: 0.2rem;
+
+    .label-with-icon i {
         color: #3b4cca;
-        font-size: 1.1rem;
-        opacity: 0.8;
-        pointer-events: none;
+        font-size: 1rem;
+        width: 20px; /* Garante alinhamento fixo dos ícones */
+        text-align: center;
     }
+
+    .input-wrapper {
+        width: 100%;
+    }
+
     .input-wrapper input, input[type="text"], input[type="password"], input[type="email"] {
-        padding-left: 0.8rem;
+        width: 100%;
+        padding: 12px 15px; 
+        border: 2px solid #e2e8f0;
         border-radius: 10px;
         font-size: 0.95rem;
         background: #f8fafc;
         color: #0f172a;
-        transition: all 0.3s ease;
-        border: 2px solid #e2e8f0;
-        width: 100%;
+        transition: all 0.2s ease;
+        box-sizing: border-box; /* Garante que padding não estoure a largura */
     }
 
     .input-wrapper input:focus {
@@ -141,20 +134,6 @@
         background: #fff;
         outline: none;
         box-shadow: 0 0 0 4px rgba(59, 76, 202, 0.1);
-    }
-
-    .input-icon-svg {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #64748b;
-        transition: color 0.3s ease;
-        pointer-events: none;
-    }
-
-    .input-wrapper input:focus + .input-icon-svg {
-        color: #3b4cca;
     }
 
     /* Botão */
@@ -168,12 +147,8 @@
         padding: 14px;
         font-size: 1rem;
         cursor: pointer;
-        margin-top: 10px;
+        margin-top: 15px;
         transition: transform 0.2s, box-shadow 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
     }
 
     .btn-submit:hover {
@@ -189,25 +164,17 @@
         color: #64748b;
     }
 
-    .login-redirect a {
-        color: #3b4cca;
-        text-decoration: none;
-        font-weight: 700;
-    }
-
-    .login-redirect a:hover {
-        text-decoration: underline;
-    }
+    .login-redirect a { color: #3b4cca; text-decoration: none; font-weight: 700; }
+    .login-redirect a:hover { text-decoration: underline; }
 
     .cadastro-error {
-        background: #fee2e2;
-        color: #ef4444;
-        padding: 10px;
-        border-radius: 8px;
-        margin-top: 15px;
-        font-size: 0.9rem;
-        text-align: center;
-        border: 1px solid #fecaca;
+        background: #fee2e2; color: #ef4444;
+        padding: 10px; border-radius: 8px; margin-top: 15px;
+        font-size: 0.9rem; text-align: center; border: 1px solid #fecaca;
+    }
+    
+    .field-error {
+        color: #dc2626; font-size: 0.8rem; margin-top: 4px;
     }
 
     @keyframes slideUp {
@@ -218,7 +185,7 @@
     /* Mobile */
     @media (max-width: 900px) {
         .cadastro-card { flex-direction: column; width: 100%; max-width: 400px; min-height: auto; }
-        .cadastro-left { display: none; } /* Opcional: Esconder o lado esquerdo no mobile para focar no form */
+        .cadastro-left { display: none; }
         .cadastro-right { width: 100%; padding: 30px; }
     }
 </style>
@@ -226,16 +193,10 @@
 <div class="cadastro-main">
     <div class="cadastro-card">
         <div class="cadastro-left">
-            <div class="icon-brand">
-                <i class="fas fa-calendar-alt"></i>
-            </div>
+            <div class="icon-brand"><i class="fas fa-calendar-alt"></i></div>
             <div class="system-title">AgendeAqui</div>
-            <div class="system-desc">
-                Organize reservas, otimize espaços e facilite a gestão acadêmica em um só lugar.
-            </div>
-            <div class="secure-badge">
-                <i class="fas fa-lock"></i> Cadastro Seguro
-            </div>
+            <div class="system-desc">Organize reservas, otimize espaços e facilite a gestão acadêmica em um só lugar.</div>
+            <div class="secure-badge"><i class="fas fa-lock"></i> Cadastro Seguro</div>
         </div>
 
         <div class="cadastro-right">
@@ -246,58 +207,62 @@
                 {% csrf_token %}
                 
                 <div class="input-group">
-                    <label class="input-label" for="id_username">Usuário</label>
+                    <div class="label-with-icon">
+                        <i class="fas fa-user"></i>
+                        <label for="id_username">Usuário</label>
+                    </div>
                     <div class="input-wrapper">
                         {{ form.username }}
-                        <i class="fas fa-user input-icon-svg"></i>
                     </div>
                     {% if form.username.errors %}
-                        <div class="field-error alert alert-danger mt-2 p-1">{{ form.username.errors.0 }}</div>
+                        <div class="field-error">{{ form.username.errors.0 }}</div>
                     {% endif %}
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="id_email">E-mail</label>
+                    <div class="label-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <label for="id_email">E-mail</label>
+                    </div>
                     <div class="input-wrapper">
                         {{ form.email }}
-                        <i class="fas fa-envelope input-icon-svg"></i>
                     </div>
                     {% if form.email.errors %}
-                        <div class="field-error alert alert-danger mt-2 p-1">{{ form.email.errors.0 }}</div>
+                        <div class="field-error">{{ form.email.errors.0 }}</div>
                     {% endif %}
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="id_password1">Senha</label>
+                    <div class="label-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <label for="id_password1">Senha</label>
+                    </div>
                     <div class="input-wrapper">
                         {{ form.password1 }}
-                        <i class="fas fa-lock input-icon-svg"></i>
                     </div>
                     {% if form.password1.errors %}
-                        <div class="field-error alert alert-danger mt-2 p-1">{{ form.password1.errors.0 }}</div>
+                        <div class="field-error">{{ form.password1.errors.0 }}</div>
                     {% endif %}
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="id_password2">Confirmar Senha</label>
+                    <div class="label-with-icon">
+                        <i class="fas fa-check-circle"></i>
+                        <label for="id_password2">Confirmar Senha</label>
+                    </div>
                     <div class="input-wrapper">
                         {{ form.password2 }}
-                        <i class="fas fa-check-circle input-icon-svg"></i>
                     </div>
                     {% if form.password2.errors %}
-                        <div class="field-error alert alert-danger mt-2 p-1">{{ form.password2.errors.0 }}</div>
+                        <div class="field-error">{{ form.password2.errors.0 }}</div>
                     {% endif %}
                 </div>
 
-                <button type="submit" class="btn-submit">
-                    CADASTRAR
-                </button>
+                <button type="submit" class="btn-submit">CADASTRAR</button>
             </form>
 
             {% if form.errors %}
-                <div class="cadastro-error">
-                    <i class="fas fa-exclamation-triangle"></i> Verifique os dados informados.
-                </div>
+                <div class="cadastro-error">Verifique os dados informados.</div>
             {% endif %}
 
             <div class="login-redirect">
@@ -309,7 +274,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Adiciona placeholders e remove classes padrões do Django se necessário
         const inputs = [
             {id: 'id_username', ph: 'Seu usuário'},
             {id: 'id_email', ph: 'seu@email.com'},
@@ -321,30 +285,8 @@
             const el = document.getElementById(field.id);
             if(el) {
                 el.setAttribute('placeholder', field.ph);
-                // O CSS cuida do resto, não precisa adicionar classes extras via JS
             }
         });
-
-        // Validação simples de senha no cliente
-        const form = document.querySelector('.cadastro-right form');
-        if(form) {
-            form.addEventListener('submit', function(e) {
-                const p1 = document.getElementById('id_password1');
-                const p2 = document.getElementById('id_password2');
-                if(p1 && p2 && p1.value !== p2.value) {
-                    e.preventDefault();
-                    // mostra mensagem temporária
-                    let err = document.querySelector('.client-pw-error');
-                    if(!err) {
-                        err = document.createElement('div');
-                        err.className = 'client-pw-error alert alert-danger mt-2 p-1';
-                        err.textContent = 'As senhas não coincidem.';
-                        p2.closest('.input-group').appendChild(err);
-                    }
-                    p2.focus();
-                }
-            });
-        }
     });
 </script>
 

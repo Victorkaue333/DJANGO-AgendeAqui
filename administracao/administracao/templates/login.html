@@ -4,7 +4,7 @@
 
 {% block content %}
 <style>
-    /* Fundo Escuro (Igual ao Cadastro) */
+    /* --- Layout Principal --- */
     .login-main {
         min-height: 100vh;
         width: 100%;
@@ -17,7 +17,7 @@
 
     .login-card {
         display: flex;
-        width: 800px; /* Um pouco menor que o cadastro pois tem menos campos */
+        width: 800px;
         min-height: 500px;
         border-radius: 20px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -38,7 +38,7 @@
         40%, 60% { transform: translateX(4px); }
     }
 
-    /* Lado Esquerdo - Azul */
+    /* --- Lado Esquerdo (Azul) --- */
     .login-left {
         background: linear-gradient(135deg, #3b4cca 0%, #1e293b 100%);
         color: #fff;
@@ -50,7 +50,6 @@
         position: relative;
     }
 
-    /* Padrão de fundo sutil */
     .login-left::before {
         content: '';
         position: absolute;
@@ -70,21 +69,8 @@
         transform: scale(1.1) rotate(-5deg);
     }
 
-    .system-title {
-        font-family: 'Inter', sans-serif;
-        font-size: 2rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.5px;
-    }
-
-    .system-desc {
-        font-size: 1.1rem;
-        opacity: 0.9;
-        font-weight: 400;
-        margin-bottom: 2rem;
-        line-height: 1.4;
-    }
+    .system-title { font-family: 'Inter', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+    .system-desc { font-size: 1.1rem; opacity: 0.9; font-weight: 400; margin-bottom: 2rem; line-height: 1.4; }
 
     .secure-badge {
         margin-top: auto;
@@ -99,7 +85,7 @@
         width: fit-content;
     }
 
-    /* Lado Direito - Formulário */
+    /* --- Lado Direito (Formulário) --- */
     .login-right {
         width: 55%;
         padding: 3rem;
@@ -109,46 +95,52 @@
         background: #fff;
     }
 
-    .welcome-text {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #0f172a;
-        margin-bottom: 5px;
-    }
+    .welcome-text { font-size: 1.8rem; font-weight: 700; color: #0f172a; margin-bottom: 5px; }
+    .subtitle-text { color: #64748b; font-size: 0.95rem; margin-bottom: 25px; }
 
-    .subtitle-text {
-        color: #64748b;
-        font-size: 0.95rem;
-        margin-bottom: 25px;
-    }
-
-    /* Inputs Padronizados */
+    /* --- Inputs e Labels (ATUALIZADO) --- */
     .input-group {
         margin-bottom: 20px;
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
     }
 
-    .input-label {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 600;
+    /* Container para Ícone + Texto do Label */
+    .label-with-icon {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
         color: #334155;
-        margin-bottom: 6px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .label-with-icon i {
+        color: #3b4cca;
+        font-size: 1rem;
+        width: 20px;
+        text-align: center;
     }
 
     .input-wrapper {
+        width: 100%;
         position: relative;
     }
 
+    /* Input limpo sem padding extra na esquerda */
     .input-wrapper input {
         width: 100%;
-        padding: 12px 15px 12px 45px; /* Espaço para ícone */
+        padding: 12px 15px; 
         border: 2px solid #e2e8f0;
         border-radius: 10px;
         font-size: 0.95rem;
         background: #f8fafc;
         color: #0f172a;
         transition: all 0.3s ease;
+        box-sizing: border-box;
     }
 
     .input-wrapper input:focus {
@@ -156,20 +148,6 @@
         background: #fff;
         outline: none;
         box-shadow: 0 0 0 4px rgba(59, 76, 202, 0.1);
-    }
-
-    .input-icon-svg {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #64748b;
-        transition: color 0.3s ease;
-        pointer-events: none;
-    }
-
-    .input-wrapper input:focus + .input-icon-svg {
-        color: #3b4cca;
     }
 
     /* Botão */
@@ -204,30 +182,17 @@
         color: #64748b;
     }
 
-    .register-redirect a {
-        color: #3b4cca;
-        text-decoration: none;
-        font-weight: 700;
-    }
-
-    .register-redirect a:hover {
-        text-decoration: underline;
-    }
+    .register-redirect a { color: #3b4cca; text-decoration: none; font-weight: 700; }
+    .register-redirect a:hover { text-decoration: underline; }
 
     .login-error {
-        background: #fee2e2;
-        color: #ef4444;
-        padding: 12px;
-        border-radius: 8px;
-        margin-top: 15px;
-        font-size: 0.9rem;
-        text-align: center;
-        border: 1px solid #fecaca;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
+        background: #fee2e2; color: #ef4444; padding: 12px;
+        border-radius: 8px; margin-top: 15px; font-size: 0.9rem;
+        text-align: center; border: 1px solid #fecaca;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
     }
+    
+    .field-error { color: #dc2626; font-size: 0.8rem; margin-top: 4px; }
 
     @keyframes slideUp {
         from { opacity: 0; transform: translateY(20px); }
@@ -266,24 +231,28 @@
                 {% csrf_token %}
                 
                 <div class="input-group">
-                    <label class="input-label" for="id_username">Usuário</label>    
+                    <div class="label-with-icon">
+                        <i class="fas fa-user"></i>
+                        <label for="id_username">Usuário</label>
+                    </div>
                     <div class="input-wrapper">
                         {{ form.username }}
-                        <i class="fas fa-user input-icon-svg"></i>
                     </div>
                     {% if form.username.errors %}
-                        <div class="field-error alert alert-danger mt-2 p-1">{{ form.username.errors.0 }}</div>
+                        <div class="field-error">{{ form.username.errors.0 }}</div>
                     {% endif %}
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="id_password">Senha</label>
+                    <div class="label-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <label for="id_password">Senha</label>
+                    </div>
                     <div class="input-wrapper">
                         {{ form.password }}
-                        <i class="fas fa-lock input-icon-svg"></i>
                     </div>
                     {% if form.password.errors %}
-                        <div class="field-error alert alert-danger mt-2 p-1">{{ form.password.errors.0 }}</div>
+                        <div class="field-error">{{ form.password.errors.0 }}</div>
                     {% endif %}
                 </div>
 
@@ -300,14 +269,14 @@
                         <i class="fas fa-exclamation-circle"></i> Usuário ou senha inválidos.
                     </div>
                 {% endif %}
+
                 <script>
-                    // Script para ativar o shake quando houver erros (visual)
                     document.addEventListener('DOMContentLoaded', function() {
                         var card = document.querySelector('.login-card');
                         var hasError = {{ form.errors|yesno:"true,false" }};
                         if(card && hasError) {
                             card.classList.remove('shake');
-                            void card.offsetWidth; // força o reflow
+                            void card.offsetWidth;
                             card.classList.add('shake');
                         }
                     });
@@ -323,7 +292,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Adiciona placeholders padronizados
         const user = document.getElementById('id_username');
         const pass = document.getElementById('id_password');
         
