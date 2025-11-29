@@ -1,16 +1,17 @@
-
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from django.views.generic import TemplateView
+from .view import acesso_rapido, landinpage, login_view, cadastro
 from usuarios.forms import CustomAuthenticationForm
 
 urlpatterns = [
+    path('', landinpage, name='landinpage'),
     path('admin/', admin.site.urls),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=CustomAuthenticationForm), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=CustomAuthenticationForm, next_page='acesso_rapido'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-    path('', TemplateView.as_view(template_name='landinpage.html'), name='home'),
-    path('dashboard/', include('dashboard.urls')),
+    path('acesso_rapido/', acesso_rapido, name='acesso_rapido'),
+    path('login/', login_view, name='login_page'),
+    path('cadastro/', cadastro, name='cadastro_page'),
     path('salas/', include('salas.urls')),
     path('relatorios/', include('relatorios.urls')),
     path('agendamentos/', include('agendamentos.urls')),

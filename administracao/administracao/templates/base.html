@@ -256,13 +256,31 @@
             .col-lg-3, .col-md-6 { margin-bottom: 30px; }
         }
 
+        /* --- MODAL FIX (DARK THEME) --- */
+        #logoutModal .modal-content {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        #logoutModal .modal-header {
+            border-bottom: 1px solid var(--border-color);
+        }
+        #logoutModal .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+        #logoutModal .btn-close {
+            /* Inverte a cor do X para branco */
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
         {% block extra_css %}{% endblock %}
     </style>
 </head>
 <body>
     <!-- Verifica se a rota atual é Login, Cadastro ou Home para esconder a Sidebar -->
     {% with request.resolver_match.url_name as url_name %}
-        {% if url_name != 'login' and url_name != 'root_login' and url_name != 'cadastro' and url_name != 'home' %}
+        {% if url_name != 'login' and url_name != 'root_login' and url_name != 'cadastro' and url_name != 'home' and url_name != 'landinpage' %}
         
         <!-- Mobile Header (Só aparece em telas pequenas) -->
         <div class="mobile-header">
@@ -293,9 +311,9 @@
 
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="{% url 'index' %}" class="nav-link-custom {% if request.path == '/' or 'dashboard' in request.path %}active{% endif %}">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
+                    <a href="{% url 'acesso_rapido' %}" class="nav-link-custom {% if request.path == '/' or 'acesso_rapido' in request.path %}active{% endif %}">
+                        <i class="fas fa-accessible-icon"></i>
+                        <span>Acesso Rápido</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -316,28 +334,50 @@
                         <span>Relatórios</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link-custom">
-                        <i class="fas fa-cog"></i>
-                        <span>Configurações</span>
-                    </a>
-                </li>
             </ul>
 
             <div class="logout-link">
-                <a href="{% url 'logout' %}" class="nav-link-custom justify-content-center">
+                <a href="#" class="nav-link-custom justify-content-center" data-bs-toggle="modal" data-bs-target="#logoutModal">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sair do Sistema</span>
                 </a>
             </div>
         </aside>
+
+        <!-- MODAL  -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold" id="logoutModalLabel">Confirmar Logout</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                            <p class="mb-0 fs-6">Tem certeza que deseja encerrar sua sessão?</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        
+                        <!-- Form POST para corrigir Erro 405 e redirecionar -->
+                        <form method="post" action="{% url 'logout' %}" class="m-0">
+                            {% csrf_token %}
+                            <!-- Redireciona para 'landinpage' após o logout -->
+                            <input type="hidden" name="next" value="{% url 'landinpage' %}">
+                            <button type="submit" class="btn btn-danger px-4">Sair</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {% endif %}
 
         <!-- Conteúdo Principal -->
-        <!-- Se for página pública (Login/Cadastro/Home), remove margens e padding extra -->
-        <main class="main-content" style="{% if url_name == 'login' or url_name == 'root_login' or url_name == 'cadastro' or url_name == 'home' %}margin-left:0;width:100%;max-width:100%;padding:0;margin-top:0;{% endif %}">
+        <main class="main-content" style="{% if url_name == 'login' or url_name == 'root_login' or url_name == 'cadastro' or url_name == 'home' or url_name == 'landinpage' %}margin-left:0;width:100%;max-width:100%;padding:0;margin-top:0;{% endif %}">
             
-            <!-- Mensagens de Feedback (Sucesso/Erro) -->
             {% if messages and url_name != 'login' and url_name != 'cadastro' %}
                 <div class="container-fluid px-4 mt-3">
                     {% for msg in messages %}
@@ -349,17 +389,13 @@
                 </div>
             {% endif %}
 
-            <!-- Injeção do Conteúdo das Páginas -->
             {% block content %}
             {% endblock %}
         </main>
 
-        <!-- Rodapé Profissional (Só aparece completo se não for Dashboard interno) -->
-        <!-- Nota: Para Dashboards, geralmente se usa um footer simples ou nenhum. Aqui mantivemos a lógica de esconder a margem se for página pública. -->
-        <footer class="footer" style="{% if url_name == 'login' or url_name == 'root_login' or url_name == 'cadastro' or url_name == 'home' %}margin-left:0;width:100%;{% endif %}">
+        <footer class="footer" style="{% if url_name == 'login' or url_name == 'root_login' or url_name == 'cadastro' or url_name == 'home' or url_name == 'landinpage' %}margin-left:0;width:100%;{% endif %}">
             <div class="container">
                 <div class="row">
-                    <!-- Coluna 1: Marca e Sobre -->
                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 footer-left text-center text-md-start">
                         <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-3">
                             <div style="width:32px; height:32px; background:#FF3333; border-radius:6px; display:flex; align-items:center; justify-content:center; color:white;">
@@ -368,58 +404,12 @@
                             <span style="font-size:1.25rem; font-weight:700; color:white;">AgendeAqui</span>
                         </div>
                         <p style="font-size:0.9rem; line-height:1.6; max-width: 300px; margin: 0 auto 0 0;">
-                            A solução completa para gestão de espaços acadêmicos. Simplifique reservas, otimize recursos e elimine conflitos na sua instituição.
+                            A solução completa para gestão de espaços acadêmicos. 
                         </p>
-                        <div class="footer-social mt-3">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
                     </div>
 
-                    <!-- Coluna 2: Links Rápidos -->
-                    <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                        <h5>Produto</h5>
-                        <ul class="footer-links">
-                            <li><a href="#">Recursos</a></li>
-                            <li><a href="#">Preços</a></li>
-                            <li><a href="#">Para Escolas</a></li>
-                            <li><a href="#">Para Universidades</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Coluna 3: Suporte -->
-                    <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                        <h5>Suporte</h5>
-                        <ul class="footer-links">
-                            <li><a href="#">Central de Ajuda</a></li>
-                            <li><a href="#">Documentação</a></li>
-                            <li><a href="#">Status do Sistema</a></li>
-                            <li><a href="#">Fale Conosco</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Coluna 4: Legal -->
-                    <div class="col-lg-4 col-md-6">
-                        <h5>Fique por dentro</h5>
-                        <p style="font-size:0.9rem;">Receba novidades e atualizações da plataforma.</p>
-                        <form class="d-flex gap-2 mt-2">
-                            <input type="email" class="form-control bg-dark border-secondary text-white" placeholder="Seu e-mail" style="border:1px solid rgba(255,255,255,0.1);">
-                            <button class="btn btn-primary" type="button">Assinar</button>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="footer-bottom">
-                    <div class="row align-items-center">
-                        <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-                            &copy; 2025 AgendeAqui. Todos os direitos reservados.
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <a href="#" class="text-muted text-decoration-none me-3 small">Privacidade</a>
-                            <a href="#" class="text-muted text-decoration-none me-3 small">Termos de Uso</a>
-                            <a href="#" class="text-muted text-decoration-none small">Cookies</a>
-                        </div>
+                    <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                        &copy; 2025 AgendeAqui. Todos os direitos reservados.
                     </div>
                 </div>
             </div>
@@ -439,7 +429,6 @@
             if(sidebar && sidebarOverlay) {
                 sidebar.classList.toggle('active');
                 sidebarOverlay.classList.toggle('active');
-                // Bloqueia rolagem do corpo quando menu aberto
                 document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
             }
         }
@@ -460,7 +449,6 @@
             sidebarOverlay.addEventListener('click', closeSidebar);
         }
 
-        // Fecha sidebar ao clicar em link (mobile UX)
         const navLinks = document.querySelectorAll('.sidebar .nav-link-custom');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -470,7 +458,6 @@
             });
         });
 
-        // Reset visual ao redimensionar tela
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 closeSidebar();

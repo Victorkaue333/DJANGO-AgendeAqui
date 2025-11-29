@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'administracao',
     'agendamentos',
     'salas',
-    'dashboard',
     'relatorios',
 ]
 

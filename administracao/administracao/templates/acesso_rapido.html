@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Acesso Rápido {% endblock %}
+
+{% block extra_css %}
+<style>
+  .dashboard-center {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+  .dashboard-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #232946;
+    margin-bottom: 0.2rem;
+    text-align: center;
+  }
+  .dashboard-subtitle {
+    color: #7b809a;
+    font-size: 1.05rem;
+    margin-bottom: 2.2rem;
+    text-align: center;
+  }
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 32px;
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .dashboard-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44,54,80,0.10);
+    padding: 32px 18px 22px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.15s, transform 0.13s;
+    border: 2px solid transparent;
+    text-align: center;
+    min-height: 170px;
+    text-decoration: none;
+  }
+  .dashboard-card:hover, .dashboard-card:focus {
+    box-shadow: 0 8px 32px rgba(44,54,80,0.18);
+    border-color: #6366f1;
+    transform: translateY(-3px) scale(1.03);
+    text-decoration: none;
+  }
+  .dashboard-card .icon {
+    font-size: 2.3rem;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    padding: 12px;
+    display: inline-block;
+    color: #fff;
+  }
+  .icon-green { background: #22c55e; }
+  .icon-blue { background: #3b82f6; }
+  .icon-orange { background: #f97316; }
+  .icon-purple { background: #a21caf; }
+  .icon-cyan { background: #06b6d4; }
+  .icon-red { background: #ef4444; }
+  .dashboard-card-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #232946;
+    margin-bottom: 0.2rem;
+  }
+  .dashboard-card-desc {
+    font-size: 0.97rem;
+    color: #7b809a;
+    margin-bottom: 0;
+  }
+  @media (max-width: 700px) {
+    .dashboard-grid { grid-template-columns: 1fr; gap: 18px; }
+    .dashboard-center { margin-top: 1.2rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-center">
+  <div class="dashboard-title">Olá, {{ request.user.first_name|default:request.user.username }}!</div>
+  <div class="dashboard-subtitle">Selecione uma opção para começar</div>
+  <div class="dashboard-grid">
+    <a href="{% url 'agendamentos:agendamentos' %}" class="dashboard-card" tabindex="0">
+      <span class="icon icon-green"><i class="fas fa-calendar-check"></i></span>
+      <span class="dashboard-card-title">Agendamentos</span>
+      <span class="dashboard-card-desc">Visualizar e gerenciar reservas ativas.</span>
+    </a>
+    <a href="{% url 'salas:list' %}" class="dashboard-card" tabindex="0">
+      <span class="icon icon-blue"><i class="fas fa-door-open"></i></span>
+      <span class="dashboard-card-title">Salas e Labs</span>
+      <span class="dashboard-card-desc">Gerencie salas, laboratórios e recursos.</span>
+    </a>
+    <a href="{% url 'relatorios:index' %}" class="dashboard-card" tabindex="0">
+      <span class="icon icon-orange"><i class="fas fa-chart-pie"></i></span>
+      <span class="dashboard-card-title">Relatórios</span>
+      <span class="dashboard-card-desc">Acesse relatórios de uso e estatísticas.</span>
+    </a>
+    
+  </div>
+</div>
+{% endblock %}
